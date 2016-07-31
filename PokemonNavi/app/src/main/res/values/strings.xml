@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PokemonNavi</string>
     <string name="facebook_app_id">309473156053729</string>
+    <string name="MapsApiKey">AIzaSyDItDsCff_gYtG6PzD7Xtu71vWnm2ullko</string>
 </resources>

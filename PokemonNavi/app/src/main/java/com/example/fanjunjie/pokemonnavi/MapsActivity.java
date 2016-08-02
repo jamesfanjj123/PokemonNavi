@@ -41,6 +41,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Location location;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
+    PlaceAutocompleteFragment autocompleteFragment;
+    Boolean teleport;
 
 
 
@@ -49,41 +51,50 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        autocompleteFragment= (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         if (GoogleServiceAvailability()) {
             MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment);
             mapFragment.getMapAsync(this);
             mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
             mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10 * 1000).setFastestInterval(1 * 1000);
-            PlaceAutocompleteFragment autocompleteFragment= (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    Log.i(TAG, "Place: " + place.getName());
+                    LatLng latLngselect= place.getLatLng();
+                    Log.i("Latlong",place.getLatLng().toString());
+                    teleport= Boolean.TRUE;
+                    googleMapvar.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngselect,16));
                 }
+
 
                 @Override
                 public void onError(Status status) {
                     Log.i(TAG, "An error occurred: " + status);
                 }
             });
-
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mGoogleApiClient.connect();
-    }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+        Log.i(TAG, "OnStart: Location update started");
+
+    }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
+            Log.i(TAG, "onPause: Location updated removed");
         }
     }
 
@@ -101,17 +112,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMapvar = googleMap;
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
     }
@@ -150,13 +156,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private void handleNewLocation(Location location) {
-        Log.d(TAG, location.toString());
+        Log.i(TAG, location.toString());
 
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        googleMapvar.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
-        googleMapvar.addMarker(new MarkerOptions().position(latLng).title("Start").icon(BitmapDescriptorFactory.fromResource(R.drawable.myloc)));
+
+
+           googleMapvar.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+
+            googleMapvar.addMarker(new MarkerOptions().position(latLng).title("Start").icon(BitmapDescriptorFactory.fromResource(R.drawable.myloc)));
 
     }
 
@@ -184,7 +193,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
+        Log.i(TAG, "Location  changed.");
     }
+
+
 }
 
 

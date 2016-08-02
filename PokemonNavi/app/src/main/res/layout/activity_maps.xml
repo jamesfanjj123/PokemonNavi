@@ -41,11 +41,12 @@
 
     <fragment
         android:id="@+id/place_autocomplete_fragment"
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="57dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/imageButton"
-        android:layout_alignEnd="@+id/imageButton" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

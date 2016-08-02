@@ -23,6 +23,7 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,12 +35,14 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // LoginButton loginButton;
+
     CallbackManager callbackManager;
-    TextView textView;
-    AccessTokenTracker accessTokenTracker;
+
+
     ProfileTracker mProfileTracker;
-    AccessToken accessToken;
+
+   // ProfilePictureView profilePictureView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,48 +53,45 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+       // profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicturetest);
 
-          textView= (TextView) findViewById(R.id.textView);
-
-// first check if user already log in, if logged in with info goto second Activity
+        // first check if user already log in, if logged in with info goto second Activity
 
         if(Profile.getCurrentProfile()!=null){
-            //Toast.makeText(LoginActivity.this,"have file",Toast.LENGTH_LONG).show();
 
-           // textView.setText(Profile.getCurrentProfile().getFirstName());
-            Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-             startActivity(intent);
+            //Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+            // startActivity(intent);
+
+            //Toast.makeText(LoginActivity.this,"already Login",Toast.LENGTH_LONG).show();
 
 
         }
 
-// track Profile change
+            // track Profile change
             mProfileTracker = new ProfileTracker() {
                 @Override
                 protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
 
                     Profile.setCurrentProfile(currentProfile);
-                    if(currentProfile==null){
+                    if(currentProfile!=null){
 
-                        textView.setText("loged out");
-                    }else{
+                       //SharedPreferences.Editor editor = (SharedPreferences.Editor) getSharedPreferences("MyFile",MODE_PRIVATE);
 
-                        textView.setText(Profile.getCurrentProfile().getFirstName());
+                        //editor.putString("id",currentProfile.getId());
+                        //editor.putString("name",currentProfile.getName());
+                        //editor.commit();
+
+                      //  profilePictureView.setProfileId(currentProfile.getId());
+                        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+                        intent.putExtra("id",currentProfile.getId());
+                        intent.putExtra("name",currentProfile.getName());
+
+                        startActivity(intent);
 
 
                     }
-                    //Toast.makeText(LoginActivity.this,"creat one profile",Toast.LENGTH_LONG).show();
-
                 }
             };
-
-
-            //textView.setText(Profile.getCurrentProfile().getFirstName());
-            //Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-            //startActivity(intent);
-
-
-
 
 
     }
@@ -108,10 +108,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
 
 
-
-
-                //Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-                // startActivity(intent);
             }
 
             @Override
@@ -144,20 +140,25 @@ public class LoginActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mProfileTracker.stopTracking();
-        //LoginManager.getInstance().logOut();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //LoginManager.getInstance().logOut();
 
-    }
 
     public void Gogest(View view) {
 
+
+        //SharedPreferences.Editor editor = (SharedPreferences.Editor) getSharedPreferences("MyFile",MODE_PRIVATE);
+
+        //editor.putString("id",null);
+        //editor.putString("name",null);
+        //editor.commit();
+
+
+
         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
         startActivity(intent);
+
+
 
     }
 

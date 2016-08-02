@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:id="@+id/textView2" />
+            android:id="@+id/Welcome" />
 
         <Button
             android:layout_width="wrap_content"

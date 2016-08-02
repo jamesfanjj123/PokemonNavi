@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/linearLayout3"
-        android:layout_below="@+id/place_autocomplete_fragment"
         android:layout_alignParentStart="true">
 
         <com.facebook.login.widget.ProfilePictureView
@@ -72,16 +71,17 @@
 
     <fragment
         android:id="@+id/place_autocomplete_fragment"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/imageView" />
         android:layout_below="@+id/linearLayout3"
+        android:layout_alignEnd="@+id/imageButton" /><![CDATA[
+
+    android:layout_below="@+id/linearLayout3"
         android:layout_alignStart="@+id/imageButton" />
+]]>
 </RelativeLayout>
 
 

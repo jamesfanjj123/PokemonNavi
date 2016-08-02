@@ -1,13 +1,19 @@
 package com.example.fanjunjie.pokemonnavi;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,11 +24,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     GoogleMap googleMapvar;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
+        button = (Button) findViewById(R.id.logout_button);
+
+        if(Profile.getCurrentProfile()!=null){
+           Toast.makeText(MapsActivity.this,"noprofile",Toast.LENGTH_LONG).show();
+
+
+        }else{
+            Toast.makeText(MapsActivity.this,"Have file",Toast.LENGTH_LONG).show();
+        }
+
+
+
 
         if (GoogleServiceAvailability()) {
             MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment);
@@ -61,6 +81,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void setMapCameraToCurrent(View view) {
+
+    }
+
+    public void FacebookLogout(View view) {
+
+        LoginManager.getInstance().logOut();
+
+
 
     }
 }

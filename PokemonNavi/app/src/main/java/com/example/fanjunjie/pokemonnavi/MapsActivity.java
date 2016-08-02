@@ -2,6 +2,7 @@ package com.example.fanjunjie.pokemonnavi;
 
 import android.app.Dialog;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -11,8 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,17 +47,49 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Location location;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
+    ProfilePictureView profilePictureView;
+    TextView textView;
+    Button button;
     PlaceAutocompleteFragment autocompleteFragment;
     Boolean teleport;
-
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
         autocompleteFragment= (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        //get id and username
+        profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
+        textView = (TextView) findViewById(R.id.Welcome);
+        button = (Button) findViewById(R.id.logout_button);
+
+        Bundle bundle = getIntent().getExtras();
+
+
+        if(bundle!=null){
+
+            profilePictureView.setProfileId(bundle.getString("id"));
+
+            textView.setText("Welcome "+bundle.getString("name"));
+        }else {
+
+
+            textView.setText("Welcome Guest!!!");
+            button.setText("Try log in ");
+
+        }
+
+
+
+
+
+
+
+
 
         if (GoogleServiceAvailability()) {
             MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment);
@@ -145,7 +183,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             Log.i("Still Null", "Doesnt have any value ");
         }
-       else {
+        else {
 
             Log.i("Not null", "Has some value: ");
             handleNewLocation(location);
@@ -197,7 +235,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    public void FacebookLogout(View view) {
+
+        LoginManager.getInstance().logOut();
+
+        this.finish();
+
+
+
+    }
 }
-
-
-

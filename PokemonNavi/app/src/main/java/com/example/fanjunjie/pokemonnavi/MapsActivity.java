@@ -244,4 +244,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
+
+    public void addpokemon(View view) {
+       final Dialog dialog= new Dialog(this);
+        dialog.setContentView(R.layout.dialogbox);
+        dialog.show();
+        Button cancle= (Button) dialog.findViewById(R.id.button3);
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+     }
 }

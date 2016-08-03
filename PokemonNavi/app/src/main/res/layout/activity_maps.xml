@@ -53,7 +53,7 @@
         android:id="@+id/imageButton"
         android:layout_margin="15dp"
         android:background="@drawable/fabbutton"
-
+        android:onClick="addpokemon"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/fragment"
         android:layout_marginBottom="41dp"
@@ -77,7 +77,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_below="@+id/linearLayout3"
-        android:layout_alignEnd="@+id/imageButton" /><![CDATA[
+        android:layout_alignEnd="@+id/imageButton" />
+
+    <![CDATA[
 
     android:layout_below="@+id/linearLayout3"
         android:layout_alignStart="@+id/imageButton" />

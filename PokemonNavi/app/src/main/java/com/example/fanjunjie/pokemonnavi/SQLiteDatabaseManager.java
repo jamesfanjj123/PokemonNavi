@@ -11,7 +11,7 @@ public class SQLiteDatabaseManager {
 
     public class SqlHelper extends SQLiteOpenHelper{
 
-        private static final String DATABASE_NAME = "PokeApi";
+        private static final String DATABASE_NAME = "PokeDB";
         private static final int DATABASE_VERSION = 1;
 
 
@@ -22,6 +22,10 @@ public class SQLiteDatabaseManager {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+
+            db.execSQL( "CREATE TABLE " + "PokeData" + "(" + "id" + " INTEGER ," + "name" + " VARCHAR(255)," + "picurl" + " VARCHAR(255)"+ ")");
+            db.execSQL("CREATE TABLE " + "UserData" + "(" + "id" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," + "finddate" + " DATETIME"+ ")");
+            db.execSQL("CREATE TABLE " + "LocationData" + "(" + "name" + " VARCHAR(255),"+ "lon" + " VARCHAR(255)," + "lat" + " VARCHAR(255)"+ ")");
 
         }
 

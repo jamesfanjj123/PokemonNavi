@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -264,11 +265,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         dialog.setContentView(R.layout.dialogbox);
         dialog.show();
         Button cancle= (Button) dialog.findViewById(R.id.button3);
+        EditText pokename = (EditText) dialog.findViewById(R.id.editText);
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
+        Button add = (Button) dialog.findViewById(R.id.button2);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+
      }
 }

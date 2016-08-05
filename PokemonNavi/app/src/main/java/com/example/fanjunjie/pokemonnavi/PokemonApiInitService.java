@@ -19,6 +19,9 @@ import java.net.URL;
  */
 public class PokemonApiInitService extends IntentService {
 
+
+    private SQLiteDatabaseManager sqLiteDatabaseManager;
+
     public static final String SERVER_URL="https://pokeapi.co/api/v2/pokemon/";
 
 
@@ -29,8 +32,12 @@ public class PokemonApiInitService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        sqLiteDatabaseManager = new SQLiteDatabaseManager(this);
 
-        for(int i=0; i<722;i++) {
+
+
+
+        for(int i=1; i<152;i++) {
 
             try {
                 URL url = new URL(SERVER_URL + i);
@@ -43,13 +50,16 @@ public class PokemonApiInitService extends IntentService {
 
                 String pokeName = jsonObject.getString("name");
 
-                Log.d("poke name", pokeName);
+               // Log.d("poke name", pokeName);
 
                 JSONObject jsonsprites = jsonObject.getJSONObject("sprites");
 
                 String picUrl = jsonsprites.getString("front_default");
 
-                Log.d("url ", picUrl);
+               // Log.d("url ", picUrl);
+                sqLiteDatabaseManager.insertPokeData(pokeName,picUrl);
+
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

@@ -1,9 +1,9 @@
 package com.example.fanjunjie.pokemonnavi;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -44,7 +44,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
-    GoogleMap googleMapvar;
     private GoogleApiClient mGoogleApiClient;
     public static final String TAG = MapsActivity.class.getSimpleName();
     Location location;
@@ -55,11 +54,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Button button;
     PlaceAutocompleteFragment autocompleteFragment;
     Boolean teleport;
-
+    private static Context context;
+    public static GoogleMap googleMapvar;
+    public static LatLng pLatlong;
+    public static Boolean Flag= Boolean.FALSE;
+    public static LatLng telLatlng;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MapsActivity.context = this;
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
@@ -104,9 +108,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void onPlaceSelected(Place place) {
                     LatLng latLngselect= place.getLatLng();
+                    telLatlng =latLngselect;
                     Log.i("Latlong",place.getLatLng().toString());
                     teleport= Boolean.TRUE;
                     googleMapvar.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngselect,16));
+                    Flag=Boolean.TRUE;
+
                 }
 
 
@@ -119,6 +126,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+
+    public static Context getAppContext() {
+        return MapsActivity.context;
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -127,7 +140,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onStop() {
@@ -168,6 +184,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         googleMapvar.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        Flag=Boolean.FALSE;
+
+        pLatlong=latLng;
 
     }
 
@@ -214,6 +233,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        pLatlong=latLng;
 
 
            googleMapvar.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
@@ -265,7 +285,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         dialog.setContentView(R.layout.dialogbox);
         dialog.show();
         Button cancle= (Button) dialog.findViewById(R.id.button3);
-        EditText pokename = (EditText) dialog.findViewById(R.id.editText);
+        final EditText pokename = (EditText) dialog.findViewById(R.id.editText);
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,8 +296,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+             String name= pokename.getText().toString().toLowerCase();
+                new SearchDatabase().execute(name);
+                dialog.dismiss();
             }
         });
 

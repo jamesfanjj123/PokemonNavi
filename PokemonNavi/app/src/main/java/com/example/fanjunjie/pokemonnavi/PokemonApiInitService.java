@@ -50,13 +50,13 @@ public class PokemonApiInitService extends IntentService {
 
                 String pokeName = jsonObject.getString("name");
 
-               // Log.d("poke name", pokeName);
+               Log.d("pokename", pokeName);
 
                 JSONObject jsonsprites = jsonObject.getJSONObject("sprites");
 
                 String picUrl = jsonsprites.getString("front_default");
 
-               // Log.d("url ", picUrl);
+               Log.d("url ", picUrl);
                 sqLiteDatabaseManager.insertPokeData(pokeName,picUrl);
 
 

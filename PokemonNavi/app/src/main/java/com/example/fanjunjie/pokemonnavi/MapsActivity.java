@@ -59,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static LatLng pLatlong;
     public static Boolean Flag= Boolean.FALSE;
     public static LatLng telLatlng;
+    public static String userID;
 
 
     @Override

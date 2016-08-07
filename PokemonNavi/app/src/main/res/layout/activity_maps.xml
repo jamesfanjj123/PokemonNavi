@@ -79,6 +79,22 @@
         android:layout_below="@+id/linearLayout3"
         android:layout_alignEnd="@+id/imageButton" />
 
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/checksymbol"
+        android:id="@+id/imageButton2"
+        android:layout_alignTop="@+id/imageButton"
+        android:layout_toStartOf="@+id/imageButton" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/imageButton3"
+        android:background="@drawable/cancelbutton"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView" />
+
     <![CDATA[
 
     android:layout_below="@+id/linearLayout3"

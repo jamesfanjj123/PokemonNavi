@@ -59,11 +59,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static LatLng pLatlong;
     public static Boolean Flag= Boolean.FALSE;
     public static LatLng telLatlng;
-    public static String userID;
+    public static String userID=null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         MapsActivity.context = this;
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -80,16 +81,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(bundle!=null){
 
+            userID=bundle.getString("id");
             profilePictureView.setProfileId(bundle.getString("id"));
-
             textView.setText("Welcome "+bundle.getString("name"));
         }else {
 
-
+            userID=null;
             textView.setText("Welcome Guest!!!");
             button.setText("Try log in ");
 
         }
+
 
 
 
@@ -278,31 +280,48 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.finish();
 
 
-
     }
 
     public void addpokemon(View view) {
-       final Dialog dialog= new Dialog(this);
-        dialog.setContentView(R.layout.dialogbox);
-        dialog.show();
-        Button cancle= (Button) dialog.findViewById(R.id.button3);
-        final EditText pokename = (EditText) dialog.findViewById(R.id.editText);
-        cancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        Button add = (Button) dialog.findViewById(R.id.button2);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             String name= pokename.getText().toString().toLowerCase();
-                new SearchDatabase().execute(name);
-                dialog.dismiss();
-            }
-        });
 
+        if(userID==null)
+        {
+            AlertDialog alert = new AlertDialog.Builder(MapsActivity.this).create();
+            alert.setTitle("Stop! ");
+            alert.setMessage("Please login to add Pokemon");
+            alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alert.show();
 
+        }
+        else {
+
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.dialogbox);
+            dialog.show();
+            Button cancle = (Button) dialog.findViewById(R.id.button3);
+            final EditText pokename = (EditText) dialog.findViewById(R.id.editText);
+            cancle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            Button add = (Button) dialog.findViewById(R.id.button2);
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String name = pokename.getText().toString().toLowerCase();
+                    new SearchDatabase().execute(name);
+                    dialog.dismiss();
+                }
+            });
+
+        }
      }
 }

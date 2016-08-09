@@ -20,7 +20,6 @@ import java.net.URL;
 public class PokemonApiInitService extends IntentService {
 
 
-    private SQLiteDatabaseManager sqLiteDatabaseManager;
 
     public static final String SERVER_URL="https://pokeapi.co/api/v2/pokemon/";
 
@@ -32,7 +31,7 @@ public class PokemonApiInitService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        sqLiteDatabaseManager = new SQLiteDatabaseManager(this);
+        MapsActivity.sqLiteDatabaseManager = new SQLiteDatabaseManager(this);
 
 
 
@@ -57,7 +56,7 @@ public class PokemonApiInitService extends IntentService {
                 String picUrl = jsonsprites.getString("front_default");
 
                Log.d("url ", picUrl);
-                sqLiteDatabaseManager.insertPokeData(pokeName,picUrl);
+                MapsActivity.sqLiteDatabaseManager.insertPokeData(pokeName,picUrl);
 
 
 

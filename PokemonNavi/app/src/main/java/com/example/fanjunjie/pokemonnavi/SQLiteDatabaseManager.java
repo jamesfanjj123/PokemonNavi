@@ -28,7 +28,7 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL( "CREATE TABLE " + "PokeData" + "(" + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "name" + " VARCHAR(255)," + "picurl" + " VARCHAR(255)"+ ")");
-            db.execSQL("CREATE TABLE " + "PokeLog" + "(" + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," +"lat" + " VARCHAR(255),"+"lon" + " VARCHAR(255)" +")");
+            db.execSQL("CREATE TABLE " + "PokeLog" + "("+ "Logid" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," +"lat" + " DOUBLE,"+"lon" + "DOUBLE" +")");
 
         }
 
@@ -50,7 +50,7 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
 
         }
 
-        public boolean insertlog(String uname,String pokname,String lat,String lng)
+        public boolean insertlog(String uname,String pokname,Double lat,Double lng)
         {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();

@@ -58,12 +58,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static Context context;
     public static GoogleMap googleMapvar;
     public static LatLng pLatlong;
-    public static Boolean Flag= Boolean.FALSE;
     public static LatLng telLatlng;
     public static String userID=null;
     public static ImageButton cancle;
     public static ImageButton finalize;
     public static ImageButton add;
+    public static SQLiteDatabaseManager sqLiteDatabaseManager;
+
 
 
 
@@ -122,7 +123,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Log.i("Latlong",place.getLatLng().toString());
                     teleport= Boolean.TRUE;
                     googleMapvar.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngselect,16));
-                    Flag=Boolean.TRUE;
 
                 }
 
@@ -194,7 +194,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         googleMapvar.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        Flag=Boolean.FALSE;
 
         pLatlong=latLng;
 
@@ -339,7 +338,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             cancle.setVisibility(View.VISIBLE);
             finalize.setVisibility(View.VISIBLE);
         }
-        else if (visible)
+        else
         {
             cancle.setVisibility(View.INVISIBLE);
             finalize.setVisibility(View.INVISIBLE);

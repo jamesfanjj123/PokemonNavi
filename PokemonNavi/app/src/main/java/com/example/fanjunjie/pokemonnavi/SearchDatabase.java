@@ -25,21 +25,20 @@ import java.net.URL;
  */
 public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
     PokemonInfo pokemonInfo;
-    SQLiteDatabaseManager sqLiteDatabaseManager;
     URL url = null;
     Bitmap image = null;
     LatLng current;
     LatLng fin;
+    Marker pokemarker;
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        sqLiteDatabaseManager= new SQLiteDatabaseManager(MapsActivity.getAppContext());
     }
 
     @Override
     protected PokemonInfo doInBackground(String... params) {
-        pokemonInfo= sqLiteDatabaseManager.getpokeimage(params[0]);
+        pokemonInfo= MapsActivity.sqLiteDatabaseManager.getpokeimage(params[0]);
         if(pokemonInfo==null)
         {
             return null;
@@ -61,7 +60,8 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
     }
 
     @Override
-    protected void onPostExecute(PokemonInfo pokemonInfo) {
+    protected void onPostExecute(PokemonInfo pokemonInfovar) {
+        pokemonInfo=pokemonInfovar;
         if (pokemonInfo == null) {
             AlertDialog alert = new AlertDialog.Builder(MapsActivity.getAppContext()).create();
             alert.setTitle("Sorry ");
@@ -74,12 +74,14 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
                     });
             alert.show();
         } else {
-            if (MapsActivity.Flag) {
-                current = MapsActivity.telLatlng;
-            } else {
-                current = MapsActivity.pLatlong;
-            }
-            MapsActivity.googleMapvar.addMarker(new MarkerOptions().position(current).title(pokemonInfo.pokename).icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(image, 350, 350, false))).draggable(true).zIndex(100000));
+//            if (MapsActivity.Flag) {
+//                current = MapsActivity.telLatlng;
+//            } else {
+//                current = MapsActivity.pLatlong;
+//            }
+            current=MapsActivity.googleMapvar.getCameraPosition().target;
+            fin=current;
+            pokemarker= MapsActivity.googleMapvar.addMarker(new MarkerOptions().position(current).title(pokemonInfo.pokename).icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(image, 350, 350, false))).draggable(true).zIndex(100000));
             Toast.makeText(MapsActivity.getAppContext(), pokemonInfo.pokename + " added to the map", Toast.LENGTH_SHORT).show();
             MapsActivity.Buttonvisibility(Boolean.TRUE);
             MapsActivity.add.setVisibility(View.INVISIBLE);
@@ -106,6 +108,8 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
                 @Override
                 public void onClick(View v) {
                     MapsActivity.add.setVisibility(View.VISIBLE);
+                    pokemarker.remove();
+                    MapsActivity.Buttonvisibility(Boolean.FALSE);
 
                 }
             });
@@ -113,6 +117,18 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
                 @Override
                 public void onClick(View v) {
                     MapsActivity.add.setVisibility(View.VISIBLE);
+                   if(MapsActivity.sqLiteDatabaseManager.insertlog(MapsActivity.userID,pokemonInfo.pokename,fin.latitude,fin.longitude))
+                    {
+                        Toast.makeText(MapsActivity.getAppContext(), pokemonInfo.pokename + " added to the Database", Toast.LENGTH_SHORT).show();
+                        MapsActivity.Buttonvisibility(Boolean.FALSE);
+                        pokemarker.setDraggable(false);
+                    }
+                    else {
+                       Toast.makeText(MapsActivity.getAppContext(), pokemonInfo.pokename + " Error!! Not added to the Database", Toast.LENGTH_SHORT).show();
+                       MapsActivity.Buttonvisibility(Boolean.FALSE);
+
+                   }
+
 
                 }
             });

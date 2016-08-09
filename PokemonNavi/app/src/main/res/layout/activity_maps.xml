@@ -83,6 +83,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/checksymbol"
+        android:visibility="invisible"
         android:id="@+id/imageButton2"
         android:layout_alignTop="@+id/imageButton"
         android:layout_toStartOf="@+id/imageButton" />
@@ -90,6 +91,7 @@
     <ImageButton
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:visibility="invisible"
         android:id="@+id/imageButton3"
         android:background="@drawable/cancelbutton"
         android:layout_alignTop="@+id/imageView"

@@ -8,10 +8,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+
+
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.facebook.FacebookActivity"
@@ -25,7 +28,8 @@
             android:value="@string/facebook_app_id" />
 
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"  android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -34,7 +38,7 @@
         </activity>
         <service android:name=".PokemonApiInitService"/>
 
-        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".MapsActivity" android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MapsApiKey"/>

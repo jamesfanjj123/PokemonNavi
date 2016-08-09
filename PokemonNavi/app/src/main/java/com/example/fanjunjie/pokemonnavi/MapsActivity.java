@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,12 +55,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Button button;
     PlaceAutocompleteFragment autocompleteFragment;
     Boolean teleport;
-    private static Context context;
+    public static Context context;
     public static GoogleMap googleMapvar;
     public static LatLng pLatlong;
     public static Boolean Flag= Boolean.FALSE;
     public static LatLng telLatlng;
     public static String userID=null;
+    public static ImageButton cancle;
+    public static ImageButton finalize;
+    public static ImageButton add;
+
 
 
     @Override
@@ -69,8 +74,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
+        add= (ImageButton) findViewById(R.id.imageButton);
         autocompleteFragment= (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
+        cancle= (ImageButton) findViewById(R.id.imageButton3);
+        finalize= (ImageButton) findViewById(R.id.imageButton2);
         //get id and username
         profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
         textView = (TextView) findViewById(R.id.Welcome);
@@ -284,21 +291,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addpokemon(View view) {
 
-        if(userID==null)
-        {
-            AlertDialog alert = new AlertDialog.Builder(MapsActivity.this).create();
-            alert.setTitle("Stop! ");
-            alert.setMessage("Please login to add Pokemon");
-            alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alert.show();
-
-        }
-        else {
+//        if(userID==null)
+//        {
+//            AlertDialog alert = new AlertDialog.Builder(MapsActivity.this).create();
+//            alert.setTitle("Stop! ");
+//            alert.setMessage("Please login to add Pokemon");
+//            alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//            alert.show();
+//
+//        }
+//        else {
 
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.dialogbox);
@@ -322,6 +329,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             });
 
-        }
+//        }
      }
+
+    public static void Buttonvisibility(boolean visible)
+    {
+        if(visible)
+        {
+            cancle.setVisibility(View.VISIBLE);
+            finalize.setVisibility(View.VISIBLE);
+        }
+        else if (visible)
+        {
+            cancle.setVisibility(View.INVISIBLE);
+            finalize.setVisibility(View.INVISIBLE);
+        }
+    }
 }

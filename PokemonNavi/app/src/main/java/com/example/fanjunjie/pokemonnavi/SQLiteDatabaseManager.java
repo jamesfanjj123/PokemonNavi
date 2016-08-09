@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 
 /**
  * Created by fanjunjie on 8/3/16.
@@ -27,8 +28,7 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL( "CREATE TABLE " + "PokeData" + "(" + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "name" + " VARCHAR(255)," + "picurl" + " VARCHAR(255)"+ ")");
-          //  db.execSQL("CREATE TABLE " + "UserData" + "(" + "id" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," + "finddate" + " DATETIME"+ ")");
-          //  db.execSQL("CREATE TABLE " + "LocationData" + "(" + "name" + " VARCHAR(255),"+ "lon" + " VARCHAR(255)," + "lat" + " VARCHAR(255)"+ ")");
+            db.execSQL("CREATE TABLE " + "PokeLog" + "(" + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," +"lat" + " VARCHAR(255),"+"lon" + " VARCHAR(255)" +")");
 
         }
 
@@ -50,16 +50,34 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
 
         }
 
+        public boolean insertlog(String uname,String pokname,String lat,String lng)
+        {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("Userid",uname);
+            contentValues.put("pokename",pokname);
+            contentValues.put("lat",lat);
+            contentValues.put("lon",lng);
+            db.insert("PokeLog","Guest",contentValues);
+
+            return true;
+        }
+
+           @Nullable
            public PokemonInfo getpokeimage(String pokename)
           {
               PokemonInfo pokemonInfo= new PokemonInfo();
               SQLiteDatabase db=this.getReadableDatabase();
               Cursor cursor=db.query("PokeData",COLUMNS,"name = ?",new String[] {pokename},null,null,null,null);
-              cursor.moveToFirst();
-              pokemonInfo.pokedeid=cursor.getInt(cursor.getColumnIndex("id"));
-              pokemonInfo.pokename=cursor.getString(cursor.getColumnIndex("name"));
-              pokemonInfo.url=cursor.getString(cursor.getColumnIndex("picurl"));
-              return  pokemonInfo;
+              if(cursor!=null && cursor.getCount()>0) {
+                  cursor.moveToFirst();
+                  pokemonInfo.pokedeid = cursor.getInt(cursor.getColumnIndex("id"));
+                  pokemonInfo.pokename = cursor.getString(cursor.getColumnIndex("name"));
+                  pokemonInfo.url = cursor.getString(cursor.getColumnIndex("picurl"));
+                  return pokemonInfo;
+              }
+
+                  return null;
 
           }
 

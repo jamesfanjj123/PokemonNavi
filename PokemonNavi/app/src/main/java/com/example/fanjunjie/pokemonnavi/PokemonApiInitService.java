@@ -1,5 +1,6 @@
 package com.example.fanjunjie.pokemonnavi;
 
+import android.app.Application;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
@@ -19,7 +20,7 @@ import java.net.URL;
  */
 public class PokemonApiInitService extends IntentService {
 
-
+SQLiteDatabaseManager sqLiteDatabaseManager;
 
     public static final String SERVER_URL="https://pokeapi.co/api/v2/pokemon/";
 
@@ -31,12 +32,12 @@ public class PokemonApiInitService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        MapsActivity.sqLiteDatabaseManager = new SQLiteDatabaseManager(this);
+        sqLiteDatabaseManager = new SQLiteDatabaseManager(MyApplication.getContext());
+        int num=sqLiteDatabaseManager.getProfilesCount();
 
 
 
-
-        for(int i=1; i<152;i++) {
+        for(int i=num+1; i<152;i++) {
 
             try {
                 URL url = new URL(SERVER_URL + i);
@@ -56,7 +57,7 @@ public class PokemonApiInitService extends IntentService {
                 String picUrl = jsonsprites.getString("front_default");
 
                Log.d("url ", picUrl);
-                MapsActivity.sqLiteDatabaseManager.insertPokeData(pokeName,picUrl);
+                sqLiteDatabaseManager.insertPokeData(pokeName,picUrl);
 
 
 

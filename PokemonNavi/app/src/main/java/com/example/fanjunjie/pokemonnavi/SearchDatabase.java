@@ -30,7 +30,7 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
     LatLng current;
     LatLng fin;
     Marker pokemarker;
-
+SQLiteDatabaseManager sqLiteDatabaseManager= new SQLiteDatabaseManager(MyApplication.getContext());
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -38,7 +38,7 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
 
     @Override
     protected PokemonInfo doInBackground(String... params) {
-        pokemonInfo= MapsActivity.sqLiteDatabaseManager.getpokeimage(params[0]);
+        pokemonInfo= sqLiteDatabaseManager.getpokeimage(params[0]);
         if(pokemonInfo==null)
         {
             return null;
@@ -117,7 +117,7 @@ public class SearchDatabase extends AsyncTask <String,Void,PokemonInfo>{
                 @Override
                 public void onClick(View v) {
                     MapsActivity.add.setVisibility(View.VISIBLE);
-                   if(MapsActivity.sqLiteDatabaseManager.insertlog(MapsActivity.userID,pokemonInfo.pokename,fin.latitude,fin.longitude))
+                   if(sqLiteDatabaseManager.insertlog(MapsActivity.userID,pokemonInfo.pokename,fin.latitude,fin.longitude))
                     {
                         Toast.makeText(MapsActivity.getAppContext(), pokemonInfo.pokename + " added to the Database", Toast.LENGTH_SHORT).show();
                         MapsActivity.Buttonvisibility(Boolean.FALSE);

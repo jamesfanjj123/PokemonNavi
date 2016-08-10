@@ -63,7 +63,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static ImageButton cancle;
     public static ImageButton finalize;
     public static ImageButton add;
-    public static SQLiteDatabaseManager sqLiteDatabaseManager;
 
 
 

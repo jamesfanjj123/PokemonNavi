@@ -15,7 +15,7 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
 
 
 
-        private static final String DATABASE_NAME = "PokeDB";
+        private static final String DATABASE_NAME = "PokeDB3";
         private static final int DATABASE_VERSION = 1;
     private static final String[] COLUMNS = {"id","name","picurl"};
 
@@ -28,12 +28,13 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL( "CREATE TABLE " + "PokeData" + "(" + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "name" + " VARCHAR(255)," + "picurl" + " VARCHAR(255)"+ ")");
-            db.execSQL("CREATE TABLE " + "PokeLog" + "("+ "Logid" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," +"lat" + " DOUBLE,"+"lon" + "DOUBLE" +")");
+            db.execSQL("CREATE TABLE " + "PokeLog" + "("+ "Logid" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," +"lat" + " DOUBLE,"+"lon" + " DOUBLE" +")");
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
 
         }
 
@@ -44,7 +45,7 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
             ContentValues contentValues = new ContentValues();
             contentValues.put("name",name);
             contentValues.put("picurl",url);
-            db.insert("PokeData",null,contentValues);
+            db.insert("PokeData","Guest",contentValues);
 
             return true;
 
@@ -56,12 +57,21 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
             ContentValues contentValues = new ContentValues();
             contentValues.put("Userid",uname);
             contentValues.put("pokename",pokname);
-            contentValues.put("lat",lat);
+           contentValues.put("lat",lat);
             contentValues.put("lon",lng);
             db.insert("PokeLog","Guest",contentValues);
 
             return true;
         }
+
+    public int getProfilesCount() {
+        String countQuery = "SELECT  * FROM  PokeData";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
 
            @Nullable
            public PokemonInfo getpokeimage(String pokename)

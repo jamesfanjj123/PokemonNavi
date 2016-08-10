@@ -120,7 +120,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     LatLng latLngselect= place.getLatLng();
                     telLatlng =latLngselect;
                     Log.i("Latlong",place.getLatLng().toString());
-                    teleport= Boolean.TRUE;
                     googleMapvar.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngselect,16));
 
                 }
@@ -192,7 +191,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        googleMapvar.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMapvar.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
 
         pLatlong=latLng;
 

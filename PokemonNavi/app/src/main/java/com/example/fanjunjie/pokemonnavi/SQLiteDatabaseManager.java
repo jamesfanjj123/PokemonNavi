@@ -16,7 +16,7 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
 
 
         private static final String DATABASE_NAME = "PokeDB3";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
     private static final String[] COLUMNS = {"id","name","picurl"};
 
         public SQLiteDatabaseManager(Context context) {
@@ -28,13 +28,14 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL( "CREATE TABLE " + "PokeData" + "(" + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "name" + " VARCHAR(255)," + "picurl" + " VARCHAR(255)"+ ")");
-            db.execSQL("CREATE TABLE " + "PokeLog" + "("+ "Logid" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255)," +"lat" + " DOUBLE,"+"lon" + " DOUBLE" +")");
+            db.execSQL("CREATE TABLE " + "PokeLog" + "("+ "Logid" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255),"+ "url" + " VARCHAR(255) ," +"lat" + " DOUBLE,"+"lon" + " DOUBLE" +")");
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+            db.execSQL("DROP TABLE IF EXISTS " + "PokeLog");
+            db.execSQL("CREATE TABLE " + "PokeLog" + "("+ "Logid" + " INTEGER PRIMARY KEY AUTOINCREMENT ," + "Userid" + " VARCHAR(255) ," + "pokename" + " VARCHAR(255),"+ "url" + " VARCHAR(255) ," +"lat" + " DOUBLE,"+"lon" + " DOUBLE" +")");
 
         }
 
@@ -51,13 +52,14 @@ public class SQLiteDatabaseManager extends SQLiteOpenHelper{
 
         }
 
-        public boolean insertlog(String uname,String pokname,Double lat,Double lng)
+        public boolean insertlog(String uname,String pokname,String url,Double lat,Double lng)
         {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put("Userid",uname);
             contentValues.put("pokename",pokname);
            contentValues.put("lat",lat);
+            contentValues.put("url",url);
             contentValues.put("lon",lng);
             db.insert("PokeLog","Guest",contentValues);
 

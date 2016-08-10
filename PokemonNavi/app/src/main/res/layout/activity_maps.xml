@@ -80,8 +80,8 @@
         android:layout_alignEnd="@+id/imageButton" />
 
     <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/checksymbol"
         android:visibility="invisible"
         android:id="@+id/imageButton2"
@@ -89,8 +89,8 @@
         android:layout_toStartOf="@+id/imageButton" />
 
     <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:visibility="invisible"
         android:id="@+id/imageButton3"
         android:background="@drawable/cancelbutton"

@@ -117,7 +117,7 @@ SQLiteDatabaseManager sqLiteDatabaseManager= new SQLiteDatabaseManager(MyApplica
                 @Override
                 public void onClick(View v) {
                     MapsActivity.add.setVisibility(View.VISIBLE);
-                   if(sqLiteDatabaseManager.insertlog(MapsActivity.userID,pokemonInfo.pokename,fin.latitude,fin.longitude))
+                   if(sqLiteDatabaseManager.insertlog(MapsActivity.userID,pokemonInfo.pokename,pokemonInfo.url,fin.latitude,fin.longitude))
                     {
                         Toast.makeText(MapsActivity.getAppContext(), pokemonInfo.pokename + " added to the Database", Toast.LENGTH_SHORT).show();
                         MapsActivity.Buttonvisibility(Boolean.FALSE);
